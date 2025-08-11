@@ -5,8 +5,8 @@ import {
   CONTEXT
 }                     from '../core/index.js'
 import Model          from "./model.js";
-// import EditorProvider from './view.codemirror.js';
-import EditorProvider from './view.simple.js';
+import EditorProvider from './view.codemirror.js';
+// import EditorProvider from './view.simple.js';
 import saveFile       from "./savefile.js";
 import style          from './style.js'
 import html           from './html.js'

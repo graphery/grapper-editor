@@ -2,7 +2,7 @@ import {
   Base,
   FIRE_EVENT
 }                 from '../core/index.js';
-import { Editor } from '../../js/codemirror.js';
+import { Editor } from '../cm/codemirror.js';
 
 function debounce (fn) {
   let n = 0;

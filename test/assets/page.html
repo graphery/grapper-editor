@@ -3,12 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <title>Title</title>
-  <script src="https:/cdn.graphery.online/graphane/1.0.0-beta/module/component/composer.js" type="module"></script>
-<!--  <script src="http://localhost:7000/src/component/composer.js" type="module"></script>-->
+  <script src="https://cdn.jsdelivr.net/npm/grapper/dist/module/view.js" type="module"></script>
 </head>
 <body>
 <h1>iframe page</h1>
-<g-composer style="width: 100px">
+<grapper-view style="width: 100px">
   <template>
     <svg viewBox="0 0 100 100" id="svg">
       <g g-for="value of data">
@@ -29,6 +28,6 @@
       { cx: 75, cy: 75, color: "blue" },
     ]
   </script>
-</g-composer>
+</grapper-view>
 </body>
 </html>

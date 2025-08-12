@@ -1,0 +1,43 @@
+{
+  "name": "grapper-editor",
+  "version": "1.0.0-beta.1",
+  "description": "Grapper Source Code Editor",
+  "author": "Graphery",
+  "homepage": "https://grapper.io",
+  "bugs": "https://github.com/graphery/grapper-editor/issues",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/graphery/grapper-editor.git"
+  },
+  "type": "module",
+  "license": "MIT",
+  "scripts": {
+    "build": "npm run build:cm && npm run build:editor",
+    "build:cm": "vite build --config vite.config.codemirror.js",
+    "build:cm:watch": "vite build --watch --config vite.config.codemirror.js",
+    "build:editor": "vite build --config vite.config.editor.js",
+    "workbench:editor": "g-workbench -l g-editor -i https://cdn.jsdelivr.net/npm/grapper/dist/module/view.js -i /src/index.js -t test/cases -p 8000",
+    "publish" : "node ./tools/npm-helpers/publish.js"
+  },
+  "devDependencies": {
+    "grapper-workbench": "^0.0.3",
+    "grapper-packer": "^0.0.3",
+    "grapper-core": "^1.0.0-beta.3",
+    "@codemirror/autocomplete": "^6.18.6",
+    "@codemirror/lang-html": "^6.4.9",
+    "@codemirror/lang-xml": "^6.1.0",
+    "@codemirror/lang-javascript": "^6.2.4",
+    "@codemirror/state": "^6.5.2",
+    "@codemirror/view": "^6.38.1",
+    "codemirror": "^6.0.2",
+    "prettier": "^3.6.2",
+    "vite": "^7.1.2"
+  },
+  "keywords": [
+    "editor",
+    "grapper",
+    "web-component",
+    "svg",
+    "graphery"
+  ]
+}

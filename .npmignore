@@ -1,0 +1,13 @@
+### WebStorm
+.idea/
+
+### Project
+assets
+poc
+src
+test
+test-results
+tools
+vite.config.codemirror.js
+vite.config.editor.js
+package.json.backup

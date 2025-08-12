@@ -128,6 +128,7 @@ class GraphaneEditor extends Base {
       ${ html }
     `;
 
+    this.shadowRoot.querySelector('#title').innerHTML = this.title || '';
     this.#editorProvider          = this.shadowRoot.querySelector('g-editor-provider');
     this.#editorProvider.code     = this.#model.code;
     this.#editorProvider.readonly = this[CONTEXT].disabled || this[CONTEXT].mode !== 'edit';
@@ -235,7 +236,7 @@ class GraphaneEditor extends Base {
         break;
       case EDIT:
         this.#modeEditButton.classList.add('hidden');
-        this.#modeShowButton.classList.add('hidden');
+        this.#modeShowButton.classList.remove('hidden');
         this.#reloadButton.classList.remove('hidden');
         this.#rearrangeButton.classList.remove('hidden');
         this.#editorProvider.editable = true;
@@ -283,6 +284,7 @@ define(EditorProvider)
   .tag('g-editor-provider')
 
 define(GraphaneEditor)
+  .attr({name : 'title', type : 'string', value : '', posUpdate : RENDER})
   .attr({name : 'href', type : 'string', value : '', posUpdate : RENDER})
   .attr({name : 'keep-format', type : 'boolean', value : false, posUpdate : RENDER})
   .attr({name : 'options', type : 'object', value : {}, posUpdate : RENDER})

@@ -3,27 +3,26 @@ import * as icons     from './icons.js';
 export default `
   <div id="content-editor">
     <div class="header">
-      <div>
-        <button id="modeEdit" title="edit mode" class="hidden">
-          ${ icons.edit }
-        </button>
-        <button id="modeShow" title="exit and reload original code" class="hidden">
-          ${ icons.exit }
-        </button>
-        <button id="reload" title="reload original code" class="hidden">
-          ${ icons.reload }
-        </button>
-        <button id="rearrange" title="rearrange code" class="hidden">
-          ${ icons.rearrange }
-        </button> 
-      </div>
-      <div>
+      <div id="title"></div>
+      <div class="toolbar">
         <p id="text-copy">Copied</p>
         <button id="copy" title="copy to clipboard">
-          ${ icons.clipboard }
+          ${ icons.clipboard } <span class="text big">copy</span>
         </button>
         <button id="save" title="save to disk">
-          ${ icons.disk }
+          ${ icons.disk } <span class="text big">save</span>
+        </button>
+        <button id="modeEdit" title="edit the code" class="hidden">
+          ${ icons.edit } <span class="text big">edit</span>
+        </button>
+        <button id="reload" title="reload the original code" class="hidden">
+          ${ icons.reload } <span class="text big">reload</span>
+        </button>
+        <button id="rearrange" title="rearrange the code" class="hidden">
+          ${ icons.rearrange } <span class="text big">rearrange</span>
+        </button> 
+        <button id="modeShow" title="exit and reload the original code" class="hidden">
+          ${ icons.exit } <span class="text big">exit</span>
         </button>
       </div>
     </div>

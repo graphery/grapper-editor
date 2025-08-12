@@ -1,4 +1,4 @@
-export const title       = '01) simple editor';
+export const title       = '01) simple editor with title';
 export const description = `Open the editor with the grapper-view code`;
 
 export default `<grapper-view style="width: 100px">
@@ -23,5 +23,5 @@ export default `<grapper-view style="width: 100px">
     ]
   </script>
 </grapper-view>
-<g-editor href="grapper-view"></g-editor>
+<g-editor href="grapper-view" title="simple editor with title"></g-editor>
 `;

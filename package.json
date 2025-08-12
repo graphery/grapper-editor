@@ -12,7 +12,10 @@
   "type": "module",
   "license": "MIT",
   "scripts": {
-    "build:codemirror": "vite build",
+    "build": "npm run build:cm && npm run build:editor",
+    "build:cm": "vite build --config vite.config.codemirror.js",
+    "build:cm:watch": "vite build --watch --config vite.config.codemirror.js",
+    "build:editor": "vite build --config vite.config.editor.js",
     "workbench:editor": "g-workbench -l g-editor -i https://cdn.jsdelivr.net/npm/grapper/dist/module/view.js -i /src/index.js -t test/cases -p 8000"
   },
   "devDependencies": {

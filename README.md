@@ -5,7 +5,6 @@
 A standalone code editor component that edits a `<grapper-view>` in real time and keeps its
 attributes/internal markup synchronized.
 
----
 
 ## Features
 
@@ -19,7 +18,6 @@ attributes/internal markup synchronized.
 * Theme switching (light/dark)
 * Diagnostics event stream for Grapper View validation
 
----
 
 ## Installation
 
@@ -37,7 +35,6 @@ Then import it in your app from CDN:
 
 > The component registers as `<g-editor>`.
 
----
 
 ## Working with the Grapper view (`<grapper-view>`)
 
@@ -57,7 +54,6 @@ In composer mode:
 * Diagnostics will be computed against the live `<grapper-view>` and surfaced via the `diagnostic`
   event and the built-in panel (if your provider UI shows it).
 
----
 
 ## Inline content
 
@@ -86,7 +82,6 @@ Or:
 </g-editor>
 ```
 
----
 
 ## Editing an existing element with `href`
 
@@ -102,7 +97,6 @@ Point the editor at any element in the same document (or an `<iframe>`):
   `contentDocument.body`.
 * When you edit, the target element’s `innerHTML` is updated in real time.
 
----
 
 
 ## Attributes
@@ -119,7 +113,6 @@ Point the editor at any element in the same document (or an `<iframe>`):
 
 > All attributes are reactive and can be changed at runtime.
 
----
 
 ## Line highlighting
 
@@ -131,7 +124,6 @@ Use `lines-highlight` with a semicolon-separated list of single lines or inclusi
 
 The string is parsed into numeric lines and applied by the editor provider.
 
----
 
 ## UI & header actions
 
@@ -145,7 +137,6 @@ Depending on `mode`, the header shows:
 
 > In `readonly` mode, all editing controls are hidden and the editor is non-editable.
 
----
 
 ## Events
 
@@ -177,7 +168,6 @@ These are automatically emitted during the component's lifecycle:
 | **`refresh`** | After the component has updated its content without a full re-render.       |
 | **`update`**  | Each time the component’s content is updated (may fire multiple times).     |
 
----
 
 ## Programmatic API
 
@@ -223,7 +213,6 @@ editor.resetChange();      // sets "original" = current buffer
 * `toDisk(): Promise<void>`
 * `resetChange(): void`
 
----
 
 ## Theming
 
@@ -237,7 +226,6 @@ document.documentElement.dispatchEvent(
 
 The editor listens for `themeChanged` on `document.documentElement` and updates itself.
 
----
 
 ## Examples
 
@@ -293,7 +281,6 @@ The editor listens for `themeChanged` on `document.documentElement` and updates 
 ```
 
 
----
 
 ## Tips & gotchas
 
@@ -303,4 +290,3 @@ The editor listens for `themeChanged` on `document.documentElement` and updates 
 * For `<grapper-view>`, both **attributes** and **inner content** are source-of-truth from the
   editor; manual changes to the live element may be overwritten by subsequent edits.
 
----

@@ -1,5 +1,4 @@
-# ![Grapper](./assets/img/grapper.png)
-# Code editor web component
+# ![Grapper](./assets/img/grapper.png)<br/>Code editor web component
 
 ## `<g-editor>`
 

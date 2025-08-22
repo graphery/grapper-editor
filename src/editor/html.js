@@ -10,7 +10,7 @@ export default `
           ${ icons.clipboard } <span class="text big">copy</span>
         </button>
         <button id="save" title="save to disk">
-          ${ icons.disk } <span class="text big">save</span>
+          ${ icons.disk } <span class="text big">export</span>
         </button>
         <button id="modeEdit" title="edit the code" class="hidden">
           ${ icons.edit } <span class="text big">edit</span>

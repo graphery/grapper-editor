@@ -22,6 +22,7 @@ const DIAGNOSTIC = Symbol();
 const READONLY   = 'readonly';
 const SHOW       = 'show';
 const EDIT       = 'edit';
+const EDITOR     = 'editor';
 const str2lines  = (str) => {
   if (typeof str !== 'string' || !str) {
     return [];
@@ -240,6 +241,13 @@ class GraphaneEditor extends Base {
       case EDIT:
         this.#modeEditButton.classList.add('hidden');
         this.#modeShowButton.classList.remove('hidden');
+        this.#reloadButton.classList.remove('hidden');
+        this.#rearrangeButton.classList.remove('hidden');
+        this.#editorProvider.editable = true;
+        break;
+      case EDITOR:
+        this.#modeEditButton.classList.add('hidden');
+        this.#modeShowButton.classList.add('hidden');
         this.#reloadButton.classList.remove('hidden');
         this.#rearrangeButton.classList.remove('hidden');
         this.#editorProvider.editable = true;

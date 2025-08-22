@@ -147,7 +147,10 @@ class GraphaneEditor extends Base {
     this.#rearrangeButton = this.shadowRoot.querySelector('#rearrange');
 
     this.#modeEditButton.addEventListener('click', () => this.mode = EDIT);
-    this.#modeShowButton.addEventListener('click', () => this.mode = SHOW);
+    this.#modeShowButton.addEventListener('click', () => {
+      this.discardChanges()
+      this.mode = SHOW;
+    });
     this.#reloadButton.addEventListener('click', () => this.discardChanges());
     this.#rearrangeButton.addEventListener('click', () => this.rearrange());
     this.shadowRoot.querySelector('#copy').addEventListener('click', () => this.toClipboard());

@@ -1,16 +1,18 @@
-import { basicSetup }                     from "codemirror";
-import { EditorView, Decoration, keymap } from "@codemirror/view"
+import { basicSetup }                         from "codemirror";
+import { EditorView, Decoration, keymap }     from "@codemirror/view"
 import {
   Compartment, EditorState,
   StateField, StateEffect
-}                                         from '@codemirror/state';
-import { indentWithTab }                  from "@codemirror/commands"
-import { javascriptLanguage }             from "@codemirror/lang-javascript";
-import { html }                           from "@codemirror/lang-html";
-import { setDiagnostics, lintKeymap }     from '@codemirror/lint';
-import schemaSVG                          from "./schemaSVG.js";
-import schemaGraphane                     from './schemaGraphane.js';
-import themes                             from "./themes";
+}                                             from '@codemirror/state';
+import { indentWithTab }                      from "@codemirror/commands"
+import { javascriptLanguage }                 from "@codemirror/lang-javascript";
+import { html }                               from "@codemirror/lang-html";
+import { setDiagnostics, linter, lintKeymap } from '@codemirror/lint';
+import { syntaxTree }                         from '@codemirror/language';
+import schemaSVG                              from "./schemaSVG.js";
+import schemaGraphane                         from './schemaGraphane.js';
+import themes                                 from "./themes";
+import graphane2grapper                       from './graphane2grapper.js';
 
 const jsonParser      = javascriptLanguage.parser.configure({top : "SingleExpression"})
 const nestedLanguages = [
@@ -46,10 +48,51 @@ const editableConfig = new Compartment();
 
 const addLineHighlight = StateEffect.define();
 
+const deprecationLinter = linter(view => {
+  const diags = [];
+  const tree  = syntaxTree(view.state);
+
+  tree.iterate({
+    enter: (node) => {
+      if (node.name === "TagName") {
+        const name = view.state.doc.sliceString(node.from, node.to);
+        if (name.toLowerCase() === "g-composer") {
+          diags.push({
+            from: node.from,
+            to: node.to,
+            severity: "warning",
+            message: "g-composer is DEPRECATED.",
+            actions: [
+              {
+                name: "Update to Grapper",
+                apply(view, from, to) {
+                  debugger;
+                  migrateToGrapper(view, from, to);
+                }
+              }
+            ]
+          });
+        }
+      }
+    }
+  });
+
+  return diags;
+});
+
+function migrateToGrapper(view, from, to) {
+  const code = view.state.doc.toString();
+  let newCode = graphane2grapper(code)
+  view.dispatch({
+    changes: { from: 0, to: view.state.doc.length, insert: newCode }
+  });
+}
+
 function createEditorState (initialContents, myTheme, handler) {
   const extensions = [
     basicSetup,
     keymap.of([indentWithTab]),
+    keymap.of(lintKeymap),
     htmlExtension,
     lineHighlightField,
     EditorView.updateListener.of(
@@ -60,7 +103,8 @@ function createEditorState (initialContents, myTheme, handler) {
       }
     ),
     themeConfig.of(themeByIdentifier(myTheme)),
-    editableConfig.of(editable(false))
+    editableConfig.of(editable(false)),
+    deprecationLinter
   ]
 
   return EditorState.create({
@@ -112,7 +156,7 @@ export function Editor (doc = '', parent = document.body, handler = undefined, t
   Object.defineProperties(
     myEditor,
     {
-      theme    : {
+      theme          : {
         set (newTheme) {
           theme = newTheme;
           myEditor.dispatch({
@@ -123,7 +167,7 @@ export function Editor (doc = '', parent = document.body, handler = undefined, t
           return theme;
         }
       },
-      editable : {
+      editable       : {
         set (v) {
           editableValue = v;
           myEditor.dispatch({
@@ -134,8 +178,8 @@ export function Editor (doc = '', parent = document.body, handler = undefined, t
           return editableValue;
         }
       },
-      linesHighlight: {
-        get() {
+      linesHighlight : {
+        get () {
           return (lines) => {
             lines.forEach(line => {
               myEditor.dispatch({
@@ -145,9 +189,9 @@ export function Editor (doc = '', parent = document.body, handler = undefined, t
           };
         }
       },
-      diagnostic: {
-        get() {
-          return  (newDiagnostics) => {
+      diagnostic     : {
+        get () {
+          return (newDiagnostics) => {
             myEditor.dispatch(setDiagnostics(myEditor.state, newDiagnostics))
           }
         }

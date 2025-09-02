@@ -15,6 +15,7 @@ import { checkTheme } from "../helpers/dark.observer.js";
 import diagnostic     from "./diagnostic.js";
 
 const wait       = (t) => new Promise(r => setTimeout(r, t));
+const TITLE      = Symbol();
 const THEME      = Symbol();
 const MODE       = Symbol();
 const HIGHLIGHT  = Symbol();
@@ -51,10 +52,16 @@ class GraphaneEditor extends Base {
   #modeShowButton;
   #reloadButton;
   #rearrangeButton;
+  #title;
 
   async [RENDER] () {
 
     await wait(100);
+
+    if (this.getAttribute('title')) {
+      this.#title = this.getAttribute('title');
+      this.removeAttribute('title');
+    }
 
     let ref         = null;
     let isComposer  = false;
@@ -84,7 +91,7 @@ class GraphaneEditor extends Base {
           return;
         }
       }
-      isComposer     = ref.tagName.toLowerCase() === 'grapper-view';
+      isComposer     = ['grapper-view','g-composer'].includes( ref.tagName.toLowerCase() );
     }
 
     // Light DOM source as comment
@@ -129,7 +136,7 @@ class GraphaneEditor extends Base {
       ${ html }
     `;
 
-    this.shadowRoot.querySelector('#title').innerHTML = this.title || '';
+    this.shadowRoot.querySelector('#title').innerHTML = this.#title || '';
     this.#editorProvider          = this.shadowRoot.querySelector('g-editor-provider');
     this.#editorProvider.code     = this.#model.code;
     this.#editorProvider.readonly = this[CONTEXT].disabled || this[CONTEXT].mode !== 'edit';
@@ -255,7 +262,9 @@ class GraphaneEditor extends Base {
   }
 
   [DIAGNOSTIC] (ref) {
-    const composer = ref.tagName.toLowerCase() === 'grapper-view' ? ref : ref.querySelector('grapper-view');
+    const composer = ['grapper-view','g-composer'].includes(ref.tagName.toLowerCase()) ?
+      ref :
+      ref.querySelector('grapper-view, g-composer');
     if (composer) {
       diagnostic(composer, this.#model, (diagnostic) => {
         this.dispatchEvent(new CustomEvent('diagnostic', {detail : diagnostic}));
@@ -289,13 +298,22 @@ class GraphaneEditor extends Base {
     return this.#originalCode !== this.#model.code;
   }
 
+  get title() {
+    return this.#title;
+  }
+
+  set title(v) {
+    this.#title = v;
+    this.shadowRoot.querySelector('#title').innerHTML = v;
+  }
+
+
 }
 
 define(EditorProvider)
   .tag('g-editor-provider')
 
 define(GraphaneEditor)
-  .attr({name : 'title', type : 'string', value : '', posUpdate : RENDER})
   .attr({name : 'href', type : 'string', value : '', posUpdate : RENDER})
   .attr({name : 'keep-format', type : 'boolean', value : false, posUpdate : RENDER})
   .attr({name : 'options', type : 'object', value : {}, posUpdate : RENDER})

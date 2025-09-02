@@ -25,7 +25,7 @@ export class EditorModel {
 
   #change () {
     for (let id in this.#subscribers) {
-      const content = getContent(this.#doc, this.#code, 'grapper-view');
+      const content = getContent(this.#doc, this.#code, 'grapper-view, g-composer');
       setTimeout(() => this.#subscribers[id](content), 1);
     }
   }

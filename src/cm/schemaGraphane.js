@@ -21,5 +21,10 @@ export default function graphane (schemaSVG) {
     attrs['g-if'] = '';
     schemaSVG[tag].attrs = attrs;
   }
+  schemaSVG['g-composer'] = {
+    info: 'Graphane component (DEPRECATED). Replace it with grapper-view.',
+    deprecated: true,
+    globalAttrs: true
+  };
   return schemaSVG;
 }

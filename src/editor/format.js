@@ -37,9 +37,10 @@ const formatHTML = async (content) => {
 
 const formatComposer = async (composer, options = {}) => {
 
+  const tag = composer.tagName.toLowerCase();
   const script = options.gScript || options['g-script'] ? `g-script` : 'script';
 
-  let result = `<grapper-view ${ getAttributes(composer) }>\n`;
+  let result = `<${ tag } ${ getAttributes(composer) }>\n`;
 
   const template = composer.querySelector('template');
   if (template) {
@@ -76,7 +77,7 @@ const formatComposer = async (composer, options = {}) => {
     result += `<${ script } ${ getAttributes(plugin) }></${ script }>\n`;
   });
 
-  result += `</grapper-view>`;
+  result += `</${ tag }>`;
   return result;
 }
 
@@ -86,7 +87,7 @@ const format = async (code, options) => {
   fragment.innerHTML = code;
 
   for (let child of [...fragment.children]) {
-    if (child.tagName.toLowerCase() === 'grapper-view') {
+    if (child.tagName.toLowerCase() === 'grapper-view' || child.tagName.toLowerCase() === 'g-composer') {
       child.outerHTML = await formatComposer(child, options);
     }
   }

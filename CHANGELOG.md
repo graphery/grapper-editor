@@ -1,5 +1,10 @@
 # Grapper Change Log
 
+## 1.1.0-beta.3 (2025-09-03)
+
+- Fixed a bug when `g-bind` has the expression in several lines.
+- Removed an unnecessary `debugger`.
+
 ## 1.1.0-beta.2 (2025-09-02)
 
 - Fixed an error in build files.

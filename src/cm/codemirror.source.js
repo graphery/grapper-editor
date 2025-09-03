@@ -66,7 +66,6 @@ const deprecationLinter = linter(view => {
               {
                 name: "Update to Grapper",
                 apply(view, from, to) {
-                  debugger;
                   migrateToGrapper(view, from, to);
                 }
               }

@@ -1,5 +1,12 @@
 # Grapper Change Log
 
+## 1.1.0-beta.4 (2025-09-04)
+
+- An error that displayed the runtime error for a few seconds and then hidden it.
+  [issue](https://github.com/graphery/grapper-editor/issues/1).
+- Refactored external diagnostics and linter with `EditorState`.
+
+
 ## 1.1.0-beta.3 (2025-09-03)
 
 - Fixed a bug when `g-bind` has the expression in several lines.

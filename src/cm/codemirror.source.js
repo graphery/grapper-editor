@@ -46,26 +46,41 @@ const htmlExtension   = html({
 const themeConfig    = new Compartment();
 const editableConfig = new Compartment();
 
-const addLineHighlight = StateEffect.define();
+const addLineHighlight         = StateEffect.define();
+const setExternalDiagnostics   = StateEffect.define();
+const externalDiagnosticsField = StateField.define({
+  create () {
+    return [];
+  },
+  update (value, tr) {
+    for (let e of tr.effects) {
+      if (e.is(setExternalDiagnostics)) {
+        value = e.value || [];
+      }
+    }
+    return value;
+  }
+});
 
-const deprecationLinter = linter(view => {
+
+const myLinter = linter(view => {
   const diags = [];
   const tree  = syntaxTree(view.state);
 
   tree.iterate({
-    enter: (node) => {
+    enter : (node) => {
       if (node.name === "TagName") {
         const name = view.state.doc.sliceString(node.from, node.to);
         if (name.toLowerCase() === "g-composer") {
           diags.push({
-            from: node.from,
-            to: node.to,
-            severity: "warning",
-            message: "g-composer is DEPRECATED.",
-            actions: [
+            from     : node.from,
+            to       : node.to,
+            severity : "warning",
+            message  : "g-composer is DEPRECATED.",
+            actions  : [
               {
-                name: "Update to Grapper",
-                apply(view, from, to) {
+                name : "Update to Grapper",
+                apply (view, from, to) {
                   migrateToGrapper(view, from, to);
                 }
               }
@@ -75,15 +90,16 @@ const deprecationLinter = linter(view => {
       }
     }
   });
+  const diagnostic = view.state.field(externalDiagnosticsField, false) || [];
+  return diags.concat(diagnostic);
 
-  return diags;
 });
 
-function migrateToGrapper(view, from, to) {
-  const code = view.state.doc.toString();
+function migrateToGrapper (view, from, to) {
+  const code  = view.state.doc.toString();
   let newCode = graphane2grapper(code)
   view.dispatch({
-    changes: { from: 0, to: view.state.doc.length, insert: newCode }
+    changes : {from : 0, to : view.state.doc.length, insert : newCode}
   });
 }
 
@@ -103,7 +119,8 @@ function createEditorState (initialContents, myTheme, handler) {
     ),
     themeConfig.of(themeByIdentifier(myTheme)),
     editableConfig.of(editable(false)),
-    deprecationLinter
+    externalDiagnosticsField,
+    myLinter
   ]
 
   return EditorState.create({
@@ -190,9 +207,11 @@ export function Editor (doc = '', parent = document.body, handler = undefined, t
       },
       diagnostic     : {
         get () {
-          return (newDiagnostics) => {
-            myEditor.dispatch(setDiagnostics(myEditor.state, newDiagnostics))
-          }
+          return (diagnosticsArray) => {
+            myEditor.dispatch({
+              effects : setExternalDiagnostics.of(diagnosticsArray || [])
+            });
+          };
         }
       }
     }
